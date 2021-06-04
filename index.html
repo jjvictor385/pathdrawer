@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>T</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body {
+			font-family: sans-serif;
+			font-size: .9rem;
+		}
+		input, textarea {
+			border: none;
+			border-bottom: 1px solid #ddd;
+			font-family: inherit;
+			font-size: inherit;
+			display: block;
+			padding: 10px;
+			width: 100%;
+		}
+		input:focus, textarea:focus {
+			border-bottom-color: #407ff3;
+		}
+		textarea {
+			min-width: 100%;
+			max-width: 100%;
+			overflow-y: hidden;
+			resize: none;
+		}
+		:focus {
+			outline: none;
+		}
+		.f {
+			display: flex;
+		}
+		.h {
+			height: 100vh;
+		}
+		.t aside {
+			width: 50%;
+			height: 100%;
+			padding: 15px;
+		}
+		.t aside:first-child {
+			background: #407ff3;
+			color: #fff;
+		}
+		.t aside:last-child {
+			box-shadow: -1px 0 5px #5e5e5e;
+		}
+		.mgt {
+			margin-top: 10px;
+		}
+		.in.mgt {
+			margin-top: 20px;
+		}
+		.view {
+			width: 100%;
+			height: calc(100vh - 70px);
+			border-radius: 4px;
+			box-shadow: 0 3px 10px #5e5e5e;
+			background: #fff;
+		}
+		.ps input {
+			margin-right: 2px;
+		}
+	</style>
+</head>
+<body>
+	<div class="h f t">
+		<aside>
+			<h1>Result</h1>
+			<svg class="view mgt" viewBox="0 0 100 100">
+				<path></path>
+			</svg>
+		</aside>
+		<aside>
+			<h1>Settings</h1>
+			<input type="text" placeholder="fill" value="#000" class="in mgt" data-change="svg path|fill">
+			<textarea placeholder="path" rows="1" class="mgt in" data-change="svg path|d"></textarea>
+			<div class="mgt in">
+				<strong>SVG viewbox</strong>
+			</div>
+			<div class="f mgt in ps">
+				<input type="number" placeholder="MinX" value="0" data-change="svg|viewBox|0">
+				<input type="number" placeholder="MinY" value="0" data-change="svg|viewBox|1">
+				<input type="number" placeholder="Width" value="100" data-change="svg|viewBox|2">
+				<input type="number" placeholder="Height" value="100" data-change="svg|viewBox|3">
+			</div>
+		</aside>
+	</div>
+	<script type="text/javascript">
+		(function (v) {
+
+			var vw = [0, 0, 100, 100];
+
+			function rz(e) {
+				this.style.height = 'auto';
+				this.style.height = this.scrollHeight + 1 + 'px';
+			}
+
+			document.querySelectorAll('textarea').forEach(i => {
+				i.addEventListener('input', rz);
+			});
+
+			for (let x of v) {
+				x.addEventListener('input', function () {
+					var ch = this.getAttribute('data-change'),
+						v = this.value;
+
+					if (!ch)
+						return;
+
+					ch = ch.split('|');
+
+					ch.length > 2 && (vw[ch[2]] = isNaN(v) || !v ? 0 : v, v = vw.join(' '));
+
+					document.querySelector(ch[0]).setAttribute(ch[1], v);
+				});
+			}
+
+		})(document.querySelectorAll('input, textarea'));
+	</script>
+</body>
+</html>
